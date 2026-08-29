@@ -2,21 +2,21 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
+import structure.MyStack;
 
 public class Playlist {
     private String id;
     private String name;
     private List<Song> songs; // Playlist chứa 1 danh sách Song bên trong
-    private Stack<Action> undoStack;
-    private Stack<Action> redoStack;
+    private MyStack<Action> undoStack;
+    private MyStack<Action> redoStack;
 
     public Playlist(String id, String name) {
         this.id = id;
         this.name = name;
         this.songs = new ArrayList<>(); // playlist mới tạo thì rỗng
-        this.undoStack = new Stack<>(); 
-        this.redoStack = new Stack<>();
+        this.undoStack = new MyStack<>(); 
+        this.redoStack = new MyStack<>();
     }
 
     public String getId() { return id; }

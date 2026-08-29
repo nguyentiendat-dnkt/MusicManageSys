@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.Comparator;
 import java.util.Collection;
 import java.util.Collections;
+import structure.MyQueue;
 import java.io.*;
 
 public class SongService {
     private List<Song> songList;
-    private List<Song> playHistory;
+    private MyQueue<Song> playHistory;
     private static final int MAX_HISTORY_SIZE = 5;
     
     public SongService(){
         songList = new ArrayList<>();
-        playHistory = new ArrayList<>();
+        playHistory = new MyQueue<>();
     }
     
     public void addSong(Song song){
@@ -214,31 +215,24 @@ public class SongService {
     
     //tim bai hat, moi lan nghe count++ và de dau ds
     public void playSong(String id) {
-        Song song = findSongById(id);   
+        Song song = findSongById(id);
         if (song == null) {
             System.out.println("Khong tim thay bai hat.");
             return;
         }
-        song.increasePlayCount();      
-        playHistory.add(0, song);
-        
-        // Neu vuot qua gioi han, xoa bot ban cu nhat (o cuoi danh sach)
+        song.increasePlayCount();
+
+        playHistory.enqueue(song); // thêm bài mới vào cuối hàng đợi
         if (playHistory.size() > MAX_HISTORY_SIZE) {
-            playHistory.remove(playHistory.size() - 1);
+            playHistory.dequeue(); // vượt giới hạn -> tự động loại bài cũ nhất (ở đầu hàng)
         }
-        
+
         System.out.println("Dang phat: " + song.getTitle());
     }
     
     //in ds cac bai da nghe
     public void printRecentlyPlayed() {
-        if (playHistory.isEmpty()) {
-            System.out.println("Chua nghe bai nao.");
-            return;
-        }
-        for (Song s : playHistory) {
-            System.out.println(s);
-        }
+        playHistory.printNewestFirst();
     }
     
     //bai hat nghe nhieu nhat
