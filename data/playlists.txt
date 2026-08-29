@@ -1,0 +1,3 @@
+P1|thsh|S1,S2,S3,S4,S5,S6
+P2|test|
+P3|moi|S1,S2
