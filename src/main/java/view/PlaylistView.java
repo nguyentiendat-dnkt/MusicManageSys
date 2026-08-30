@@ -19,4 +19,11 @@ public class PlaylistView {
         System.out.println("0. Quay lai menu chinh");
         System.out.print("Chon chuc nang: ");
     }
+    
+    public void showRepeatModeMenu() {
+        System.out.println("\n===== CHON CHE DO LAP =====");
+        System.out.println("1. Khong lap");
+        System.out.println("2. Lap 1 bai");
+        System.out.println("3. Lap ca playlist");
+    }
 }

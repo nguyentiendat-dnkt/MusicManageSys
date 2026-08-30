@@ -178,7 +178,7 @@ public class PlaylistService {
     }
     
     // Mô phỏng phát playlist theo chế độ lặp, "steps" là số lần bấm "next"
-    public void playWithRepeat(String playlistId, int steps, SongService songService) {
+    public void playWithRepeat(String playlistId, int steps, int startIndex, SongService songService) {
         Playlist p = findPlaylistById(playlistId);
         if (p == null || p.getSongs().isEmpty()) {
             System.out.println("Playlist khong hop le hoac rong.");
@@ -186,17 +186,16 @@ public class PlaylistService {
         }
 
         List<Song> songs = p.getSongs();
-        int index = 0; // vị trí bài đang phát
+        int index = startIndex; // chon diem bat dau
 
         for (int i = 0; i < steps; i++) {
             Song current = songs.get(index);
             songService.playSong(current.getId());
 
             if (p.getRepeatMode() == RepeatMode.REPEAT_ONE) {
-                // giữ nguyên index -> lần sau vẫn phát lại đúng bài này
             } else if (p.getRepeatMode() == RepeatMode.REPEAT_ALL) {
-                index = (index + 1) % songs.size(); // hết bài cuối thì quay lại bài đầu
-            } else { // OFF
+                index = (index + 1) % songs.size();
+            } else {
                 index++;
                 if (index >= songs.size()) {
                     System.out.println("Da phat het playlist (khong lap lai).");

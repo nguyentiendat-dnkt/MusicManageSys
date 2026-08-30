@@ -59,9 +59,7 @@ public class PlaylistController {
                     setRepeatModeFromInput();
                     break;
                 case 9:
-                    String pid = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
-                    int steps = InputValidate.readIntInRange(scanner, "Nhap so buoc mo phong (VD: 5): ", 1, 1000);
-                    playlistService.playWithRepeat(pid, steps, songService);
+                    playRepeatFromInput();
                     break;
                 case 10:
                     String searchPid = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
@@ -154,12 +152,15 @@ public class PlaylistController {
             System.out.println("Khong tim thay playlist.");
             return;
         }
-        System.out.println("Chon che do: 1-OFF, 2-REPEAT_ONE, 3-REPEAT_ALL");
-        int choice = InputValidate.readIntInRange(scanner, "", 1, 3);
+
+        playlistView.showRepeatModeMenu();
+        int choice = InputValidate.readIntInRange(scanner, "Chon: ", 1, 3);
+
         if (choice == 1) p.setRepeatMode(RepeatMode.OFF);
         else if (choice == 2) p.setRepeatMode(RepeatMode.REPEAT_ONE);
         else p.setRepeatMode(RepeatMode.REPEAT_ALL);
-        System.out.println("Da dat che do: " + p.getRepeatMode());
+
+        System.out.println("Da dat che do: " + p.getRepeatMode().getDisplayName());
     }
     
     private void generatePlaylistFromInput() {
@@ -172,5 +173,26 @@ public class PlaylistController {
         int maxDuration = InputValidate.readIntInRange(scanner, "Loc theo duration toi da, giay (nhap 0 neu khong loc): ", 0, 10000);
 
         playlistService.generatePlaylistByRule(id, name, songService, genre, artist, maxDuration);
+    }
+    
+    private void playRepeatFromInput() {
+        String pid = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+        Playlist p = playlistService.findPlaylistById(pid);
+        if (p == null || p.getSongs().isEmpty()) {
+            System.out.println("Playlist khong hop le hoac rong.");
+            return;
+        }
+
+        System.out.println("--- Danh sach bai hat trong playlist: " + p.getName() + " ---");
+        for (int i = 0; i < p.getSongs().size(); i++) {
+            System.out.println((i + 1) + ". " + p.getSongs().get(i));
+        }
+
+        int choice = InputValidate.readIntInRange(scanner, "Chon bai hat muon bat dau phat: ", 1, p.getSongs().size());
+        int startIndex = choice - 1; // tru 1 vi list bat dau tu index 0
+
+        int steps = InputValidate.readIntInRange(scanner, "Nhap so lan phat: ", 1, 1000);
+
+        playlistService.playWithRepeat(pid, steps, startIndex, songService);
     }
 }
