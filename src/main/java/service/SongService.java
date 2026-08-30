@@ -115,27 +115,27 @@ public class SongService {
     
     //Sort theo ten(A-Z)
     public void sortByTitle(){
-        Collections.sort(songList, new Comparator<Song>(){
+        bubbleSort(songList, new Comparator<Song>(){
             @Override
             public int compare(Song s1, Song s2){
-                return s1.getTitle().compareTo(s2.getTitle());
+                return s1.getTitle().compareToIgnoreCase(s2.getTitle());
             }
         });
     }
     
     //Sort theo tac gia(A-Z)
     public void sortByArtist(){
-        Collections.sort(songList, new Comparator<Song>(){
+        bubbleSort(songList, new Comparator<Song>(){
             @Override
             public int compare(Song s1, Song s2){
-                return s1.getArtist().compareTo(s2.getArtist());
+                return s1.getArtist().compareToIgnoreCase(s2.getArtist());
             }
         });
     }
     
     //Sort theo duration(tang dan)
     public void sortByDuration(){
-        Collections.sort(songList, new Comparator<Song>(){
+        bubbleSort(songList, new Comparator<Song>(){
             @Override
             public int compare(Song s1, Song s2){
                 return s1.getDuration() - s2.getDuration();
@@ -145,7 +145,7 @@ public class SongService {
     
     //Sort theo playcount
     public void sortByPopularity(){
-        Collections.sort(songList, new Comparator<Song>(){
+        bubbleSort(songList, new Comparator<Song>(){
             @Override
             public int compare(Song s1, Song s2){
                 return s1.getPlayCount() - s2.getPlayCount();
@@ -279,6 +279,22 @@ public class SongService {
             score += 5; // bai favorite duoc cong them 5 diem thuong
         }
         return score;
+    }
+    
+    //bubble sort
+    private void bubbleSort(List<Song> list, Comparator<Song> comparator) {
+        int n = list.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - 1 - i; j++) {
+                // So sanh 2 phan tu lien ke
+                if (comparator.compare(list.get(j), list.get(j + 1)) > 0) {
+                    // Dao cho 2 phan tu
+                    Song temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, temp);
+                }
+            }
+        }
     }
 }
 
