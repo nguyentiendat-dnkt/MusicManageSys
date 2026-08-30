@@ -8,6 +8,7 @@ import view.PlaylistView;
 import java.util.Scanner;
 import model.RepeatMode;
 import java.util.List;
+import utils.InputValidate;
 
 public class PlaylistController {
     private PlaylistService playlistService;
@@ -27,7 +28,7 @@ public class PlaylistController {
         int choice;
         do {
             playlistView.showMenu();
-            choice = Integer.parseInt(scanner.nextLine());
+            choice = InputValidate.readInt(scanner, "");
 
             switch (choice) {
                 case 1:
@@ -37,12 +38,12 @@ public class PlaylistController {
                     playlistService.printAllPlaylists();
                     break;
                 case 3:
-                    System.out.print("Nhap id playlist can xoa: ");
-                    playlistService.deletePlaylist(scanner.nextLine());
+                    String delId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist can xoa: ");
+                    playlistService.deletePlaylist(delId);
                     break;
                 case 4:
-                    System.out.print("Nhap id playlist: ");
-                    playlistService.viewPlaylistDetails(scanner.nextLine());
+                    String viewId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+                    playlistService.viewPlaylistDetails(viewId);
                     break;
                 case 5:
                     addSongToPlaylist();
@@ -51,25 +52,20 @@ public class PlaylistController {
                     removeSongFromPlaylist();
                     break;
                 case 7:
-                    System.out.print("Nhap id playlist: ");
-                    playlistService.shufflePlay(scanner.nextLine(), songService, scanner);
+                    String shuffleId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+                    playlistService.shufflePlay(shuffleId, songService, scanner);
                     break;
                 case 8:
                     setRepeatModeFromInput();
                     break;
                 case 9:
-                    System.out.print("Nhap id playlist: ");
-                    String pid = scanner.nextLine();
-                    System.out.print("Nhap so buoc mo phong (VD: 5): ");
-                    int steps = Integer.parseInt(scanner.nextLine());
+                    String pid = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+                    int steps = InputValidate.readIntInRange(scanner, "Nhap so buoc mo phong (VD: 5): ", 1, 1000);
                     playlistService.playWithRepeat(pid, steps, songService);
                     break;
                 case 10:
-                    System.out.print("Nhap id playlist: ");
-                    String searchPid = scanner.nextLine();
-                    System.out.print("Nhap id bai hat: ");
-                    String keyword = scanner.nextLine();
-                    playlistService.printAllPlaylists();
+                    String searchPid = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+                    String keyword = InputValidate.readNonEmptyString(scanner, "Nhap tu khoa bai hat: ");
                     List<Song> found = playlistService.searchInPlaylist(searchPid, keyword);
                     if (found.isEmpty()) {
                         System.out.println("Khong tim thay.");
@@ -78,14 +74,14 @@ public class PlaylistController {
                     }
                     break;
                 case 11:
-                    System.out.print("Nhap id playlist: ");
-                    Playlist undoP = playlistService.findPlaylistById(scanner.nextLine());
+                    String undoId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+                    Playlist undoP = playlistService.findPlaylistById(undoId);
                     if (undoP != null) undoP.undo();
                     else System.out.println("Khong tim thay playlist.");
                     break;
                 case 12:
-                    System.out.print("Nhap id playlist: ");
-                    Playlist redoP = playlistService.findPlaylistById(scanner.nextLine());
+                    String redoId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+                    Playlist redoP = playlistService.findPlaylistById(redoId);
                     if (redoP != null) redoP.redo();
                     else System.out.println("Khong tim thay playlist.");
                     break;
@@ -102,24 +98,20 @@ public class PlaylistController {
     }
 
     private void createPlaylist() {
-        System.out.print("Nhap id playlist: ");
-        String id = scanner.nextLine();
-        System.out.print("Nhap ten playlist: ");
-        String name = scanner.nextLine();
+        String id = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
+        String name = InputValidate.readNonEmptyString(scanner, "Nhap ten playlist: ");
         playlistService.addPlaylist(new Playlist(id, name));
     }
 
     private void addSongToPlaylist() {
-        System.out.print("Nhap id playlist: ");
-        String playlistId = scanner.nextLine();
+        String playlistId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
         Playlist playlist = playlistService.findPlaylistById(playlistId);
         if (playlist == null) {
             System.out.println("Khong tim thay playlist.");
             return;
         }
 
-        System.out.print("Nhap id bai hat can them: ");
-        String songId = scanner.nextLine();
+        String songId = InputValidate.readNonEmptyString(scanner, "Nhap id bai hat can them: ");
         Song song = songService.findSongById(songId);
         if (song == null) {
             System.out.println("Khong tim thay bai hat.");
@@ -132,16 +124,14 @@ public class PlaylistController {
     }
 
     private void removeSongFromPlaylist() {
-        System.out.print("Nhap id playlist: ");
-        String playlistId = scanner.nextLine();
+        String playlistId = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
         Playlist playlist = playlistService.findPlaylistById(playlistId);
         if (playlist == null) {
             System.out.println("Khong tim thay playlist.");
             return;
         }
 
-        System.out.print("Nhap id bai hat can xoa: ");
-        String songId = scanner.nextLine();
+        String songId = InputValidate.readNonEmptyString(scanner, "Nhap id bai hat can xoa: ");
         if (playlist.removeSong(songId)) {
             System.out.println("Da xoa bai hat khoi playlist.");
         } else {
@@ -158,36 +148,28 @@ public class PlaylistController {
     }
     
     private void setRepeatModeFromInput() {
-        System.out.print("Nhap id playlist: ");
-        String id = scanner.nextLine();
+        String id = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
         Playlist p = playlistService.findPlaylistById(id);
         if (p == null) {
             System.out.println("Khong tim thay playlist.");
             return;
         }
         System.out.println("Chon che do: 1-OFF, 2-REPEAT_ONE, 3-REPEAT_ALL");
-        int choice = Integer.parseInt(scanner.nextLine());
+        int choice = InputValidate.readIntInRange(scanner, "", 1, 3);
         if (choice == 1) p.setRepeatMode(RepeatMode.OFF);
         else if (choice == 2) p.setRepeatMode(RepeatMode.REPEAT_ONE);
-        else if (choice == 3) p.setRepeatMode(RepeatMode.REPEAT_ALL);
-        else {
-            System.out.println("Lua chon khong hop le.");
-            return;
-        }
+        else p.setRepeatMode(RepeatMode.REPEAT_ALL);
         System.out.println("Da dat che do: " + p.getRepeatMode());
     }
     
     private void generatePlaylistFromInput() {
-        System.out.print("Nhap id playlist moi: ");
-        String id = scanner.nextLine();
-        System.out.print("Nhap ten playlist moi: ");
-        String name = scanner.nextLine();
+        String id = InputValidate.readNonEmptyString(scanner, "Nhap id playlist moi: ");
+        String name = InputValidate.readNonEmptyString(scanner, "Nhap ten playlist moi: ");
         System.out.print("Loc theo genre (de trong neu khong loc): ");
         String genre = scanner.nextLine();
         System.out.print("Loc theo nghe si (de trong neu khong loc): ");
         String artist = scanner.nextLine();
-        System.out.print("Loc theo duration toi da, giay (nhap 0 neu khong loc): ");
-        int maxDuration = Integer.parseInt(scanner.nextLine());
+        int maxDuration = InputValidate.readIntInRange(scanner, "Loc theo duration toi da, giay (nhap 0 neu khong loc): ", 0, 10000);
 
         playlistService.generatePlaylistByRule(id, name, songService, genre, artist, maxDuration);
     }

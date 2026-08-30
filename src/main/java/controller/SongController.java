@@ -5,6 +5,7 @@ import service.SongService;
 import view.SongView;
 import java.util.List;
 import java.util.Scanner;
+import utils.InputValidate;
 
 public class SongController {
     private SongService songService;
@@ -21,7 +22,7 @@ public class SongController {
         int choice;
         do {
             songView.showMenu();
-            choice = Integer.parseInt(scanner.nextLine()); // đọc lựa chọn từ bàn phím
+            choice = InputValidate.readInt(scanner, ""); // đọc lựa chọn từ bàn phím
 
             switch (choice) {
                 case 1:
@@ -31,28 +32,23 @@ public class SongController {
                     songService.printAllSongs();
                     break;
                 case 3:
-                    System.out.print("Nhap id bai hat can xoa: ");
-                    String delId = scanner.nextLine();
+                    String delId = InputValidate.readNonEmptyString(scanner, "Nhap id bai hat can xoa: ");
                     songService.deleteSong(delId);
                     break;
                 case 4:
-                    System.out.print("Nhap tu khoa ten bai hat: ");
-                    String titleKeyword = scanner.nextLine();
+                    String titleKeyword = InputValidate.readNonEmptyString(scanner, "Nhap tu khoa ten bai hat: ");
                     songService.printSongList(songService.searchByTitle(titleKeyword));
                     break;
                 case 5:
-                    System.out.print("Nhap tu khoa nghe si: ");
-                    String artistKeyword = scanner.nextLine();
+                    String artistKeyword = InputValidate.readNonEmptyString(scanner, "Nhap tu khoa nghe si: ");
                     songService.printSongList(songService.searchByArtist(artistKeyword));
                     break;
                 case 6:
-                    System.out.print("Nhap tu khoa album: ");
-                    String albumKeyword = scanner.nextLine();
+                    String albumKeyword = InputValidate.readNonEmptyString(scanner, "Nhap tu khoa album: ");
                     songService.printSongList(songService.searchByAlbum(albumKeyword));
                     break;
                 case 7:
-                    System.out.print("Nhap tu khoa genre: ");
-                    String genreKeyword = scanner.nextLine();
+                    String genreKeyword = InputValidate.readNonEmptyString(scanner, "Nhap tu khoa genre: ");
                     songService.printSongList(songService.searchByGenre(genreKeyword));
                     break;
                 case 8:
@@ -75,20 +71,18 @@ public class SongController {
                     toggleFavorite();
                     break;
                 case 13:
-                    System.out.print("Nhap id bai hat muon phat: ");
-                    songService.playSong(scanner.nextLine());
+                    String playId = InputValidate.readNonEmptyString(scanner, "Nhap id bai hat muon phat: ");
+                    songService.playSong(playId);
                     break;
                 case 14:
                     songService.printRecentlyPlayed();
                     break;
                 case 15:
-                    System.out.print("Nhap so luong top can xem: ");
-                    int topN = Integer.parseInt(scanner.nextLine());
+                    int topN = InputValidate.readIntInRange(scanner, "Nhap so luong top can xem: ", 1, 100);
                     songService.printMostPlayed(topN);
                     break;
                 case 16:
-                    System.out.print("Nhap so luong top can xem: ");
-                    int rankTopN = Integer.parseInt(scanner.nextLine());
+                    int rankTopN = InputValidate.readIntInRange(scanner, "Nhap so luong top can xem: ", 1, 100);
                     songService.printRanking(rankTopN);
                     break;
                 case 0:
@@ -101,25 +95,18 @@ public class SongController {
     }
 
     private void addSongFromInput() {
-        System.out.print("Nhap id: ");
-        String id = scanner.nextLine();
-        System.out.print("Nhap ten bai hat: ");
-        String title = scanner.nextLine();
-        System.out.print("Nhap nghe si: ");
-        String artist = scanner.nextLine();
-        System.out.print("Nhap album: ");
-        String album = scanner.nextLine();
-        System.out.print("Nhap genre: ");
-        String genre = scanner.nextLine();
-        System.out.print("Nhap thoi luong (giay): ");
-        int duration = Integer.parseInt(scanner.nextLine());
+        String id = InputValidate.readNonEmptyString(scanner, "Nhap id: ");
+        String title = InputValidate.readNonEmptyString(scanner, "Nhap ten bai hat: ");
+        String artist = InputValidate.readNonEmptyString(scanner, "Nhap nghe si: ");
+        String album = InputValidate.readNonEmptyString(scanner, "Nhap album: ");
+        String genre = InputValidate.readNonEmptyString(scanner, "Nhap genre: ");
+        int duration = InputValidate.readIntInRange(scanner, "Nhap thoi luong (giay): ", 1, 3600);
 
         songService.addSong(new Song(id, title, artist, album, genre, duration));
     }
     
     private void toggleFavorite(){
-        System.out.print("Nhap id bai hat: ");
-        String id = scanner.nextLine();
+        String id = InputValidate.readNonEmptyString(scanner, "Nhap id bai hat: ");
         Song song = songService.findSongById(id);
         if (song == null){
             System.out.println("Khong tim thay bai hat!");
