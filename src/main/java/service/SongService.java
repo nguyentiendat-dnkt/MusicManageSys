@@ -295,5 +295,15 @@ public class SongService {
             }
         }
     }
+    
+    public void toggleFavoriteById(String id) {
+        Song song = findSongById(id);
+        if (song == null) {
+            System.out.println("Khong tim thay bai hat!");
+            return;
+        }
+        song.toggleFavorite();
+        System.out.println("Bai hat " + song.getTitle() + " gio la favorite: " + song.isFavorite());
+    }
 }
 

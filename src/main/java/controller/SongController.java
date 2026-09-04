@@ -107,12 +107,6 @@ public class SongController {
     
     private void toggleFavorite(){
         String id = InputValidate.readNonEmptyString(scanner, "Nhap id bai hat: ");
-        Song song = songService.findSongById(id);
-        if (song == null){
-            System.out.println("Khong tim thay bai hat!");
-            return;
-        }
-        song.toggleFavorite();
-        System.out.println("Bai hat " + song.getTitle() + " gio la favorite: " + song.isFavorite());
+        songService.toggleFavoriteById(id);
     }
 }
