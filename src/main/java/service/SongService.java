@@ -3,7 +3,6 @@ import model.Song;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
-import java.util.Collection;
 import java.util.Collections;
 import structure.MyQueue;
 import java.io.*;
@@ -24,7 +23,7 @@ public class SongService {
     }
     
     public List<Song> getAllSongs(){
-        return songList;
+        return new ArrayList<>(songList);
     }
     
     public void printAllSongs(){
