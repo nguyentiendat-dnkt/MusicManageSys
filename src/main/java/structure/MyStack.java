@@ -2,7 +2,7 @@ package structure;
 
 public class MyStack<T> {
 
-    // Lớp Node nội bộ - chỉ dùng riêng bên trong MyStack, không ai bên ngoài cần biết đến nó
+    // Lop noi bo
     private class Node {
         T data;
         Node next;

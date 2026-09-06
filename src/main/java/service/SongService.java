@@ -155,11 +155,11 @@ public class SongService {
         // Đường dẫn file cố định để lưu dữ liệu
     private static final String FILE_PATH = "data/songs.txt";
 
-    // GHI dữ liệu ra file
+    // ghi dữ liệu ra file
     public void saveToFile() {
         try {
             File file = new File(FILE_PATH);
-            file.getParentFile().mkdirs(); // tự tạo thư mục "data" nếu chưa có
+            file.getParentFile().mkdirs(); // tự tạo file nếu chưa có
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for (Song s : songList) {
@@ -236,12 +236,12 @@ public class SongService {
     
     //bai hat nghe nhieu nhat
     public void printMostPlayed(int topN) {
-        List<Song> sorted = new ArrayList<>(songList); // tạo bản sao, không đụng vào songList gốc
+        List<Song> sorted = new ArrayList<>(songList); // tạo bản sao
 
         Collections.sort(sorted, new Comparator<Song>() {
             @Override
             public int compare(Song s1, Song s2) {
-                return s2.getPlayCount() - s1.getPlayCount(); // giảm dần, ai nghe nhiều hơn lên trước
+                return s2.getPlayCount() - s1.getPlayCount(); // giảm dần, bai nghe nhiều hơn lên trước
             }
         });
 

@@ -12,7 +12,7 @@ public class PlaylistView {
         System.out.println("7. Phat ngau nhien");
         System.out.println("8. Dat che do lap");
         System.out.println("9. Phat co lap");
-        System.out.println("10.Tim bai hat trong playlist");
+        System.out.println("10. Tim bai hat trong playlist");
         System.out.println("11. Undo");
         System.out.println("12. Redo");
         System.out.println("13. Tao playlist tu dieu kien loc");

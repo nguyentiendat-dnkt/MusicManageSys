@@ -22,7 +22,7 @@ public class SongController {
         int choice;
         do {
             songView.showMenu();
-            choice = InputValidate.readInt(scanner, ""); // đọc lựa chọn từ bàn phím
+            choice = InputValidate.readInt(scanner, "");
 
             switch (choice) {
                 case 1:

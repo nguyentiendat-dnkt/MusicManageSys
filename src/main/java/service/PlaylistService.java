@@ -33,7 +33,7 @@ public class PlaylistService {
         }
     }
 
-    // Tìm playlist theo id
+    // search
     public Playlist findPlaylistById(String id) {
         for (Playlist p : playlistList) {
             if (p.getId().equals(id)) {
@@ -55,7 +55,7 @@ public class PlaylistService {
         return false;
     }
 
-    // Xem chi tiết playlist (danh sách bài hát bên trong)
+    // xem ben trong playlist
     public void viewPlaylistDetails(String id) {
         Playlist p = findPlaylistById(id);
         if (p == null) {
@@ -75,7 +75,7 @@ public class PlaylistService {
     
         private static final String FILE_PATH = "data/playlists.txt";
 
-    // GHI dữ liệu playlist ra file
+    // ghi data ra file
     public void saveToFile() {
         try {
             File file = new File(FILE_PATH);
@@ -99,7 +99,7 @@ public class PlaylistService {
         }
     }
 
-    // ĐỌC dữ liệu playlist từ file - cần songService để tìm lại Song theo id
+    // read data tu file
     public void loadFromFile(SongService songService) {
         File file = new File(FILE_PATH);
         if (!file.exists()) {
@@ -113,7 +113,7 @@ public class PlaylistService {
             playlistList.clear();
 
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|", -1); // -1 để giữ lại phần tử rỗng (playlist chưa có bài hát nào)
+                String[] parts = line.split("\\|", -1); // -1 de giu lai phan tu rong
                 if (parts.length < 3) continue;
 
                 Playlist p = new Playlist(parts[0], parts[1]);
@@ -151,18 +151,16 @@ public class PlaylistService {
         List<Song> shuffled = new ArrayList<>(p.getSongs());
         Collections.shuffle(shuffled);
 
-        // Bước 1: in ra toàn bộ danh sách đã xáo trộn trước
         System.out.println("--- Danh sach phat ngau nhien: " + p.getName() + " ---");
         for (int i = 0; i < shuffled.size(); i++) {
             System.out.println((i + 1) + ". " + shuffled.get(i));
         }
 
-        // Bước 2: phát lần lượt, hỏi tiếp tục sau mỗi bài
+        // phat lan luot
         for (int i = 0; i < shuffled.size(); i++) {
             Song current = shuffled.get(i);
             songService.playSong(current.getId());
 
-            // Nếu đây là bài cuối cùng thì không cần hỏi tiếp nữa
             if (i == shuffled.size() - 1) {
                 System.out.println("Da phat het playlist.");
                 break;
@@ -177,7 +175,7 @@ public class PlaylistService {
         }
     }
     
-    // Mô phỏng phát playlist theo chế độ lặp, "steps" là số lần bấm "next"
+    // mo phong lan lap, so buoc la next
     public void playWithRepeat(String playlistId, int steps, int startIndex, SongService songService) {
         Playlist p = findPlaylistById(playlistId);
         if (p == null || p.getSongs().isEmpty()) {

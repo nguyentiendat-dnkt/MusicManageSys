@@ -12,11 +12,11 @@ import utils.InputValidate;
 
 public class PlaylistController {
     private PlaylistService playlistService;
-    private SongService songService; // dùng chung để tìm Song có sẵn
+    private SongService songService;
     private PlaylistView playlistView;
     private Scanner scanner;
 
-    // Nhận songService từ bên ngoài truyền vào, thay vì tự tạo mới
+    // nhan songservice tu ngoai
     public PlaylistController(SongService songService, Scanner scanner) {
         this.playlistService = new PlaylistService();
         this.songService = songService;

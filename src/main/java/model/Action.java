@@ -4,8 +4,8 @@ public class Action {
     public static final String ADD = "ADD";
     public static final String REMOVE = "REMOVE";
 
-    private String type; // ADD hoặc REMOVE
-    private Song song;   // bài hát liên quan đến hành động này
+    private String type;
+    private Song song;   
 
     public Action(String type, Song song) {
         this.type = type;

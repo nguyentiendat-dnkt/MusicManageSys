@@ -26,7 +26,7 @@ public class MyQueue<T> {
     public void enqueue(T item) {
         Node newNode = new Node(item);
         if (isEmpty()) {
-            front = newNode; // hàng đang rỗng, node mới vừa là đầu vừa là cuối
+            front = newNode; // hang rong dau cuoi la mot
             rear = newNode;
         } else {
             rear.next = newNode; // gắn node mới vào sau node cuối hiện tại
@@ -57,7 +57,7 @@ public class MyQueue<T> {
         return size;
     }
 
-    // In toàn bộ phần tử theo thứ tự MỚI NHẤT -> CŨ NHẤT (dùng đệ quy)
+    // In toàn bộ phần tử theo thứ tự MỚI NHẤT -> CŨ NHẤT
     public void printNewestFirst() {
         if (isEmpty()) {
             System.out.println("Chua co gi trong hang doi.");
@@ -71,6 +71,6 @@ public class MyQueue<T> {
             return; // đã đi hết tới cuối chuỗi, dừng đệ quy
         }
         printReverse(node.next); // gọi tiếp xuống node sau trước
-        System.out.println(node.data); // in ra SAU KHI đã gọi đệ quy xong
+        System.out.println(node.data); 
     }
 }

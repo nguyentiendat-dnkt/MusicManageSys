@@ -7,14 +7,14 @@ import structure.MyStack;
 public class Playlist {
     private String id;
     private String name;
-    private List<Song> songs; // Playlist chứa 1 danh sách Song bên trong
+    private List<Song> songs; // Playlist chua ds song
     private MyStack<Action> undoStack;
     private MyStack<Action> redoStack;
 
     public Playlist(String id, String name) {
         this.id = id;
         this.name = name;
-        this.songs = new ArrayList<>(); // playlist mới tạo thì rỗng
+        this.songs = new ArrayList<>();
         this.undoStack = new MyStack<>(); 
         this.redoStack = new MyStack<>();
     }
@@ -34,17 +34,17 @@ public class Playlist {
             return false;
         }
         songs.add(song);
-        undoStack.push(new Action(Action.ADD, song)); // ghi lại: vừa THEM bài này
-        redoStack.clear(); // có hành động mới -> xóa sạch redo cũ
+        undoStack.push(new Action(Action.ADD, song)); // ghi lai hanh dong add
+        redoStack.clear(); 
         return true;
     }
 
-    // Xóa 1 bài hát khỏi playlist theo id
+    // Xoa bai hat
     public boolean removeSong(String songId) {
         for (Song s : songs) {
             if (s.getId().equals(songId)) {
                 songs.remove(s);
-                undoStack.push(new Action(Action.REMOVE, s)); // ghi lại: vừa XOA bài này
+                undoStack.push(new Action(Action.REMOVE, s)); // ghi lai hanh dong remove
                 redoStack.clear();
                 return true;
             }
@@ -52,7 +52,7 @@ public class Playlist {
         return false;
     }
 
-    // Tính tổng thời lượng playlist (giây)
+    // tinh tong thoi luong
     public int getTotalDuration() {
         int total = 0;
         for (Song s : songs) {
@@ -81,17 +81,16 @@ public class Playlist {
             System.out.println("Khong co gi de undo.");
             return;
         }
-        Action lastAction = undoStack.pop(); // lấy hành động gần nhất ra
+        Action lastAction = undoStack.pop(); // lay hanh dong gan nhat ra
 
         if (lastAction.getType().equals(Action.ADD)) {
-            // hành động gốc là THEM -> undo nghĩa là XOA bài đó đi
+            // hanh dong la add thi undo la remove
             songs.remove(lastAction.getSong());
         } else {
-            // hành động gốc là XOA -> undo nghĩa là THEM lại bài đó
             songs.add(lastAction.getSong());
         }
 
-        redoStack.push(lastAction); // lưu lại để có thể redo sau này
+        redoStack.push(lastAction); // luu lai de redo
         System.out.println("Da undo: " + lastAction.getType() + " " + lastAction.getSong().getTitle());
     }
     
@@ -101,17 +100,15 @@ public class Playlist {
             System.out.println("Khong co gi de redo.");
             return;
         }
-        Action lastUndone = redoStack.pop(); // lấy hành động vừa undo ra
+        Action lastUndone = redoStack.pop(); // lay hanh dong undo ra
 
         if (lastUndone.getType().equals(Action.ADD)) {
-            // hành động gốc là THEM -> redo nghĩa là THEM lại
             songs.add(lastUndone.getSong());
         } else {
-            // hành động gốc là XOA -> redo nghĩa là XOA lại
             songs.remove(lastUndone.getSong());
         }
 
-        undoStack.push(lastUndone); // đưa trở lại undoStack, để có thể undo lại lần nữa nếu muốn
+        undoStack.push(lastUndone); // dua ve lai undo de co the undo tiep
         System.out.println("Da redo: " + lastUndone.getType() + " " + lastUndone.getSong().getTitle());
     }
 }
