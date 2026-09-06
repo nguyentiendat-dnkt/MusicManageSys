@@ -305,5 +305,24 @@ public class SongService {
         song.toggleFavorite();
         System.out.println("Bai hat " + song.getTitle() + " gio la favorite: " + song.isFavorite());
     }
+    
+    // Tu sinh id moi cho bai hat
+    public String generateNextSongId() {
+        int maxNumber = 0;
+        for (Song s : songList) {
+            String id = s.getId();
+            if (id.startsWith("S")) {
+                try {
+                    int number = Integer.parseInt(id.substring(1)); // lay phan so sau chu "S"
+                    if (number > maxNumber) {
+                        maxNumber = number;
+                    }
+                } catch (NumberFormatException e) {
+                    // id khong dung dinh dang "S" + so, bo qua
+                }
+            }
+        }
+        return "S" + (maxNumber + 1);
+    }
 }
 

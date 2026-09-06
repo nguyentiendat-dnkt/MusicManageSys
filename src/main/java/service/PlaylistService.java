@@ -244,4 +244,22 @@ public class PlaylistService {
         System.out.println("Da tao playlist '" + newPlaylistName + "' voi " + newPlaylist.getSongs().size() + " bai hat.");
         return newPlaylist;
     }
+    
+    // Tu sinh id moi cho playlist
+    public String generateNextPlaylistId() {
+        int maxNumber = 0;
+        for (Playlist p : playlistList) {
+            String id = p.getId();
+            if (id.startsWith("P")) {
+                try {
+                    int number = Integer.parseInt(id.substring(1));
+                    if (number > maxNumber) {
+                        maxNumber = number;
+                    }
+                } catch (NumberFormatException e) {
+                }
+            }
+        }
+        return "P" + (maxNumber + 1);
+    }
 }

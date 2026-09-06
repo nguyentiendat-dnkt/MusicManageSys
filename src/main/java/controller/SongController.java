@@ -95,11 +95,12 @@ public class SongController {
     }
 
     private void addSongFromInput() {
-        String id = InputValidate.readNonEmptyString(scanner, "Nhap id: ");
-        String title = InputValidate.readNonEmptyString(scanner, "Nhap ten bai hat: ");
-        String artist = InputValidate.readNonEmptyString(scanner, "Nhap nghe si: ");
-        String album = InputValidate.readNonEmptyString(scanner, "Nhap album: ");
-        String genre = InputValidate.readNonEmptyString(scanner, "Nhap genre: ");
+        String id = songService.generateNextSongId();
+        System.out.println("Id bai hat: " + id);
+        String title = InputValidate.readNonEmptyStringNoPipe(scanner, "Nhap ten bai hat: ");
+        String artist = InputValidate.readNonEmptyStringNoPipe(scanner, "Nhap nghe si: ");
+        String album = InputValidate.readNonEmptyStringNoPipe(scanner, "Nhap album: ");
+        String genre = InputValidate.readNonEmptyStringNoPipe(scanner, "Nhap genre: ");
         int duration = InputValidate.readIntInRange(scanner, "Nhap thoi luong (giay): ", 1, 3600);
 
         songService.addSong(new Song(id, title, artist, album, genre, duration));

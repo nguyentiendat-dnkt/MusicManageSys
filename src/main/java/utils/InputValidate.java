@@ -39,4 +39,19 @@ public class InputValidate{
             }
         }
     }
+    
+    // Doc chuoi khong duoc de trong va khong duoc chua ky tu "|" (vi day la ky tu phan tach khi luu file)
+    public static String readNonEmptyStringNoPipe(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Loi: du lieu khong duoc de trong!");
+            } else if (input.contains("|")) {
+                System.out.println("Loi: du lieu khong duoc chua ky tu '|'!");
+            } else {
+                return input;
+            }
+        }
+    }
 }

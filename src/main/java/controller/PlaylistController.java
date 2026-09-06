@@ -96,8 +96,9 @@ public class PlaylistController {
     }
 
     private void createPlaylist() {
-        String id = InputValidate.readNonEmptyString(scanner, "Nhap id playlist: ");
-        String name = InputValidate.readNonEmptyString(scanner, "Nhap ten playlist: ");
+        String id = playlistService.generateNextPlaylistId();
+        System.out.println("Id playlist: " + id);
+        String name = InputValidate.readNonEmptyStringNoPipe(scanner, "Nhap ten playlist: ");
         playlistService.addPlaylist(new Playlist(id, name));
     }
 
