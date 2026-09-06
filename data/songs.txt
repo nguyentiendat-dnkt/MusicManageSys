@@ -1,6 +1,6 @@
-S6|SSD|W/n|||480|5|false
-S3|run to you|ali hoang duong|thsh||300|8|false
-S1|mrt|buitruonglinh|thsh||300|12|false
-S2|the gioi cua anh|buitruonglinh|thsh||300|9|false
-S5|xoay vong|jsol|thsh||300|6|false
-S4|mvp|wren evans|thsh||300|7|false
+S1|MRT|buitruonglinh|thsh||300|0|false
+S2|The Gioi Cua Anh |buitruonglinh|thsh|Pop|300|0|false
+S3|Run To You|Ali Hoang Duong|thsh|Pop|300|0|false
+S4|MVP|Wren Evans|thsh|Pop|300|0|false
+S5|Xoay Vong|Jsol|thsh|Pop|300|0|false
+S6|SSD|W/n|||480|0|false
